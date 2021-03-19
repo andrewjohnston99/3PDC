@@ -3,7 +3,7 @@ import cv2
 # Open a sample video available in sample-videos
 vcap = cv2.VideoCapture('https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4')
 if not vcap.isOpened():
-    print "File Cannot be Opened"
+    print("File Cannot be Opened")
 
 while(True):
     # Capture frame-by-frame
