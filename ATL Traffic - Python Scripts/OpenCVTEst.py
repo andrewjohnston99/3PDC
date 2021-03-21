@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 # Open a sample video available in sample-videos
-vcap = cv2.VideoCapture('https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4')
+vcap = cv2.VideoCapture('rtsp://vss2live.dot.ga.gov:80/lo/gdot-cam-017.stream')
 if not vcap.isOpened():
     print("File Cannot be Opened")
 
