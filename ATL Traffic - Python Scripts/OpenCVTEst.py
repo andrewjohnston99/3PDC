@@ -6,8 +6,9 @@ from datetime import time
 from datetime import datetime
 
 # Open a sample video available in sample-videos
-stream = 'rtsp://vss2live.dot.ga.gov:80/lo/gdot-cam-017.stream'
-camera = stream[len(stream) - 19:len(stream) - 7]
+stream = 'rtsp://vss15od.dot.ga.gov:80/cl/atl-cam-955.stream'
+camera = stream[len(stream) - 19:len(stream) - 7].replace('/', '')
+print(camera)
 vcap = cv2.VideoCapture(stream)
 
 print(str(datetime.now()))
