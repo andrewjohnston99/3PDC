@@ -1,14 +1,19 @@
+import config
+import datetime
+from locationsharinglib import Service
 import logging
+import pandas as pd
+import requests
 import threading
 import time
-import datetime
-import config
-from locationsharinglib import Service
 
+# Load vars from config and define global vars for main and functions
 cookies_file = config.cookie_file
 google_email = config.rpi_google_email
 person_full_name = config.person_full_name
 cfb_polling_interval = config.cfb_polling_interval_secs
+GA511_url = config.GA511_cctv_url
+GA511_geojson = config.GA511_local_geojson
 next_cleanup_time = [""]
 
 # [Broadcast Active, Session Initiated, Session Active, ID, Directory], Global & Mutable for Threads
@@ -48,6 +53,20 @@ def initialize_session(session_status):
 def session_handler(session_status):
     # TODO
     return
+
+
+# Initialize everything before scheduling loop
+# Load latest cctv geojson from GA511, fallback to local on failure
+try:
+    result = requests.get(GA511_url)
+    if (result.ok):
+        open(GA511_geojson, 'wb').write(result.content)
+except:
+    print("Unable to fetch geojson, falling back on local copy")
+
+geojson = pd.read_json(GA511_geojson)
+
+print(geojson)
 
 # Main Decision Tree Scheduling Loop
 while(True):
