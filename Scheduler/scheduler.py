@@ -4,6 +4,7 @@ from locationsharinglib import Service
 import logging
 import math
 import numpy as np
+import os
 import pandas as pd
 import requests
 from sklearn.neighbors import BallTree
@@ -93,17 +94,20 @@ def get_cams_in_radius(latitude, longitude, radius):
 # Create folders and setup anything else necessary for a collection session.
 def initialize_session(session_status):
     print("Now Initializing")
-    # TODO Create Folders...
-
-    # Sleep to simulate loading...
-    time.sleep(10)
-
+    
     name = (person_full_name.replace(" ","") + "_")
     init_date = datetime.datetime.now()
-    session_ID = name + init_date.strftime("%Y-%m-%d_%H:%M")
+    session_ID = name + init_date.strftime("%Y-%m-%d_%H%M")
 
-    print("Session ID: " + session_ID)
+    try:
+        path_string = r"/mnt/usbdrive/NAS/ATLTrafficLogArchive/" + session_ID
+        os.mkdir(path_string)
+    except:
+        path = os.path.split(os.getcwd())
+        path_string = path[0] + "\\" + session_ID
+        os.mkdir(path_string)
 
+    session_status[4] = path_string
     session_status[3] = session_ID
     session_status[1] = True
 
@@ -156,7 +160,6 @@ def session_handler(session_status):
                 print(polling_time_s)
                 print(polling_radius_miles)
         time.sleep(polling_time_s)
-
 
 # Initialize everything before scheduling loop
 # Load latest cctv geojson from GA511, fallback to local on failure
