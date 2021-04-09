@@ -2,8 +2,10 @@ import config
 import datetime
 from locationsharinglib import Service
 import logging
+import numpy as np
 import pandas as pd
 import requests
+from sklearn.neighbors import BallTree
 import threading
 import time
 
@@ -49,24 +51,55 @@ def initialize_session(session_status):
     session_status[3] = session_ID
     session_status[1] = True
 
+# Find all cams in x km radius of lat long coordinates
+def k_nearest_cams(latitude, longitude, radius, geojson):
+    bt = BallTree(np.deg2rad(geojson[["latitude", "longitude"]].values), metric='haversine')
+    indices = bt.query_radius(np.deg2rad(np.c_[latitude, longitude]), r=radius)
+    return indices[0]
+
+def get_location():
+    # TODO
+    return True 
+
 # Poll location more frequently and handle invoking camera recordings
 def session_handler(session_status):
     # TODO
     return
-
 
 # Initialize everything before scheduling loop
 # Load latest cctv geojson from GA511, fallback to local on failure
 try:
     result = requests.get(GA511_url)
     if (result.ok):
-        open(GA511_geojson, 'wb').write(result.content)
+        open(GA511_geojson, "wb").write(result.content)
 except:
     print("Unable to fetch geojson, falling back on local copy")
 
-geojson = pd.read_json(GA511_geojson)
+geojson = pd.DataFrame(columns = ["cam_id","latitude","longitude","rtsp","url"])
+raw_geojson = pd.read_json(GA511_geojson)
+if (raw_geojson.columns[0] == "features"):
+    features_index = 0
+else:
+    features_index = 1
 
-print(geojson)
+for row in raw_geojson.T.iteritems():
+    try:
+        properties = row[1][features_index].get("properties")
+        rtsp = properties.get("RTSP", "")
+        url = properties.get("url", "")
+    except:
+        properties = ""
+        rtsp = ""
+        url = ""
+    try:
+        coordinates = row[1][features_index].get("geometry").get("coordinates", "")
+        latitude = float(coordinates[1])
+        longitude = float(coordinates[0])
+    except:
+        coordinates = None
+    cam_id = row[1][features_index].get("id", "")
+    geojson = geojson.append({"cam_id" : cam_id, "latitude" : latitude, "longitude" : longitude, "rtsp" : rtsp, "url" : url}, ignore_index = True)
+
 
 # Main Decision Tree Scheduling Loop
 while(True):

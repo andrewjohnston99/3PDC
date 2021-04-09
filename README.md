@@ -110,6 +110,8 @@ Our OS came preinstalled with Python 3.7.3 however anything newer than this shou
 - Use the following commands to install the necessary Python dependencies to run the code:
     ```
     $ pip3 install locationsharinglib
+    $ pip3 install pandas
+    $ pip3 install sklearn
     ```
 8. Generate Google Maps Cookie File (Location Sharing Authentication)
     
