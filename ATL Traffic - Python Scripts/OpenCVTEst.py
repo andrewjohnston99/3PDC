@@ -4,13 +4,14 @@ import os
 import requests
 from datetime import date
 from datetime import time
+from datetime import timedelta
 from datetime import datetime
 
 
-def recordCamera(directory,streamLink, imageLink):
+def recordCamera(directory, streamLink, imageLink, duration):
     # Open a sample video available in sample-videos
-    stream = 'rtsp://vss15od.dot.ga.gov:80/cl/gdot-cam-i-75-336.stream'
-    url = 'http://navigator-c2c.dot.ga.gov/snapshots/ATL-CAM-908.jpg'
+    stream = streamLink
+    url = imageLink
     camera = stream[stream.rfind("/"):stream.rfind(".")].replace('/', '')
     # print(stream.rfind("/"))
     # print(stream.rfind("."))
@@ -20,9 +21,9 @@ def recordCamera(directory,streamLink, imageLink):
 
     print(str(datetime.now()))
 
-    path = os.getcwd()
+    path = directory
     print ("The current working directory is %s" % path)
-    firstpath = path + "\Trip-" + str(tripNum)
+    firstpath = path
 
     try:
         os.mkdir(firstpath)
@@ -63,17 +64,19 @@ def recordCamera(directory,streamLink, imageLink):
         #     print ("Creation of the directory %s failed" % finalpath)
         # else:
         #     print ("Successfully created the directory %s " % finalpath)
-
+        endTime = datetime.now() + timedelta(seconds=duration)
         while(True):
             # Capture frame-by-frame
             ret, frame = vcap.read()
             #print cap.isOpened(), ret
             if frame is not None:
                 # Display the resulting frame
-                cv2.imshow('frame',frame)
+                # cv2.imshow('frame',frame)
                 video.write(frame)
                 # Press q to close the video windows before it ends if you want
                 if cv2.waitKey(22) & 0xFF == ord('q'):
+                    break
+                if datetime.now() >= endTime:
                     break
             else:
                 print("is None")
