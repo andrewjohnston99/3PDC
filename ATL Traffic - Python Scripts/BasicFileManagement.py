@@ -1,5 +1,8 @@
 import os
 from datetime import date
+import OpenCVTEst
+
+OpenCVTEst.recordCamera('Hello','http://navigator-c2c.dot.ga.gov/snapshots/ATL-CAM-908.jpg','rtsp://vss15od.dot.ga.gov:80/cl/gdot-cam-i-75-336.stream',)
 
 path = os.getcwd()
 print ("The current working directory is %s" % path)

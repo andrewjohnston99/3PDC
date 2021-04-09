@@ -13,16 +13,17 @@ def print_hi(name):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     urls = [
-        "http://navigator-c2c.dot.ga.gov/snapshots/ATL-CAM-908.jpg",
+        "http://navigator-c2c.dot.ga.gov/snapshots/ATL-CAM-909.jpg",
         "http://navigator-c2c.dot.ga.gov/snapshots/ATL-CAM-939.jpg",
         "http://navigator-c2c.dot.ga.gov/snapshots/ATL-CAM-085.jpg",
         "http://navigator-c2c.dot.ga.gov/snapshots/ATL-CAM-974.jpg",
         "http://navigator-c2c.dot.ga.gov/snapshots/GDOT-CAM-017.jpg"
     ]
-    index = 0;
+    index = 0
     for url in urls:
         r = requests.get(url)
-        filename = "ATL-CAM-" + str(index) + ".jpg"
+        filename = r"C:\Users\clayw\Documents\ATL Traffic\TestDirectory\March 19, 2021" + chr(92) + r"ATL-CAM-" + str(index) + r".jpg"
+        print(filename)
         index += 1
         with open(filename, "wb") as f:
             f.write(r.content)
