@@ -2,7 +2,7 @@ import os
 from datetime import date
 import OpenCVTEst
 
-OpenCVTEst.recordCamera(r'C:\Users\clayw\Documents\ATL Traffic\ATLTrafficLog\Function-Directory-Test',r'rtsp://vss15od.dot.ga.gov:80/cl/gdot-cam-i-75-lol.stream',r'http://navigator-c2c.dot.ga.gov/snapshots/ATL-CAM-908.jpg')
+OpenCVTEst.recordCamera(r'C:\Users\clayw\Documents\ATL Traffic\ATLTrafficLog\Function-Directory-Test',r'rtsp://vss15od.dot.ga.gov:80/cl/gdot-cam-i-75-336.stream',r'http://navigator-c2c.dot.ga.gov/snapshots/ATL-CAM-908.jpg', 10)
 
 path = os.getcwd()
 print ("The current working directory is %s" % path)
