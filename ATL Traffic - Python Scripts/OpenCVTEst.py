@@ -7,10 +7,10 @@ from datetime import time
 from datetime import datetime
 
 
-def recordCamera(directory,streamLink, imageLink):
+def recordCamera(directory, streamLink, imageLink):
     # Open a sample video available in sample-videos
-    stream = 'rtsp://vss15od.dot.ga.gov:80/cl/gdot-cam-i-75-336.stream'
-    url = 'http://navigator-c2c.dot.ga.gov/snapshots/ATL-CAM-908.jpg'
+    stream = streamLink
+    url = imageLink
     camera = stream[stream.rfind("/"):stream.rfind(".")].replace('/', '')
     # print(stream.rfind("/"))
     # print(stream.rfind("."))
@@ -20,9 +20,9 @@ def recordCamera(directory,streamLink, imageLink):
 
     print(str(datetime.now()))
 
-    path = os.getcwd()
+    path = directory
     print ("The current working directory is %s" % path)
-    firstpath = path + "\Trip-" + str(tripNum)
+    firstpath = path
 
     try:
         os.mkdir(firstpath)
