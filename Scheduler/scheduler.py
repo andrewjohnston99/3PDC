@@ -4,7 +4,7 @@ from locationsharinglib import Service
 import logging
 import math
 import numpy as np
-import OpenCVTEst
+import OpenCVTest
 import os
 import pandas as pd
 import requests
@@ -13,6 +13,7 @@ import threading
 import time
 
 # Load vars from config and define global vars for main and functions
+platform = config.platform
 cookies_file = config.cookie_file
 google_email = config.rpi_google_email
 person_full_name = config.person_full_name
@@ -161,7 +162,12 @@ def session_handler(session_status):
                 url = geojson.iloc[index].url
                 print(rtsp)
                 print(url)
-                threading.Thread(target = OpenCVTEst.recordCamera, args = (session_status[4],rtsp,url,polling_time_s)).start()
+                if (platform == "LINUX"):
+                    threading.Thread(target = OpenCVTest.recordCamera, args = (session_status[4],rtsp,url,polling_time_s)).start()
+                elif (platform == "WINDOWS"):
+                    threading.Thread(target = OpenCVTest.recordCameraWindows, args = (session_status[4],rtsp,url,polling_time_s)).start()
+                else:
+                    print("Platform not defined")
         time.sleep(polling_time_s)
 
 # Initialize everything before scheduling loop
@@ -215,19 +221,21 @@ while(True):
         int_session.start()
 
     # Case 3 - Session Initialized but not active
-    if (not cfb_thread_started and session_status[0] and session_status[1] and not session_status[2]):
+    if (not cfb_thread_started and not session_handler_thread_started and session_status[0] and session_status[1] and not session_status[2]):
         int_session._stop()
         session_status[2] = True
-        session_handler_thread_started = True
         session_handler_thread = threading.Thread(target = session_handler, args = ([session_status]))
-        session_handler_thread.start()
+        session_handler_thread_started = True
+        session_handler_thread.start() 
 
     # Case 4 - Session Completed, reset everything and start from scratch
-    if (session_handler_thread_started and not session_status[2]):
-        print("Stopping Session")
+    if (session_handler_thread_started and session_status[0] and session_status[1] and not session_status[2]):
         session_handler_thread._stop()
         session_handler_thread_started = False
         session_status = [False, False, False, "", "/"]
 
     # Case 5 - Start Cleanup
     # TODO - Need to handle setting next cleanup time, need thread active var too
+
+    # Check conditions every second (avoid 100% cpu usage from loop)
+    time.sleep(1)
