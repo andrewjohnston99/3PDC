@@ -4,6 +4,7 @@ from locationsharinglib import Service
 import logging
 import math
 import numpy as np
+import OpenCVTEst
 import os
 import pandas as pd
 import requests
@@ -147,10 +148,6 @@ def session_handler(session_status):
         if (last_loc != curr_loc):
             radius = miles_to_radius(polling_radius_miles)
             indices = get_cams_in_radius(curr_loc[0],curr_loc[1],radius)
-            for index in indices:
-                print(geojson.iloc[index].rtsp)
-                print(geojson.iloc[index].url)
-                #TODO - Make cam record threads
             if (last_loc != [None, None, None]):
                 distance = get_distance_between_miles(last_loc[0],last_loc[1],curr_loc[0],curr_loc[1])
                 print(distance)
@@ -159,6 +156,12 @@ def session_handler(session_status):
                 polling_time_s, polling_radius_miles = calculate_polling_vars(estimated_speed_mph)
                 print(polling_time_s)
                 print(polling_radius_miles)
+            for index in indices:
+                rtsp = geojson.iloc[index].rtsp
+                url = geojson.iloc[index].url
+                print(rtsp)
+                print(url)
+                # threading.Thread(target = OpenCVTEst.recordCamera, args = (session_status[4],rtsp,url,polling_time_s)).start()
         time.sleep(polling_time_s)
 
 # Initialize everything before scheduling loop
