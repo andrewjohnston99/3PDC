@@ -161,7 +161,7 @@ def session_handler(session_status):
                 url = geojson.iloc[index].url
                 print(rtsp)
                 print(url)
-                # threading.Thread(target = OpenCVTEst.recordCamera, args = (session_status[4],rtsp,url,polling_time_s)).start()
+                threading.Thread(target = OpenCVTEst.recordCamera, args = (session_status[4],rtsp,url,polling_time_s)).start()
         time.sleep(polling_time_s)
 
 # Initialize everything before scheduling loop
