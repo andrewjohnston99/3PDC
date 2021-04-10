@@ -1,4 +1,4 @@
-# ATL Traffic Log
+# 3rd Person Dashcam (3PDC): Georgia Edition
 ## CS 4365 Semester Project
 
 ## Usage
@@ -17,7 +17,7 @@ Coming soon 😉
 
 ### Software Installation:
 
-1. Install Raspberry Pi OS to MicroSD Card to boot a clean instance. You can reuse a previous install but some pre-existing applications may interfere with the ATL Traffic Log code.
+1. Install Raspberry Pi OS to MicroSD Card to boot a clean instance. You can reuse a previous install but some pre-existing applications may interfere with the 3PDC code.
 
 2. (Optional) - Enable VNC and/or SSH on the Pi for remote configuration. You may opt to use the Pi locally if you choose.
 
@@ -87,7 +87,7 @@ Our OS came preinstalled with Python 3.7.3 however anything newer than this shou
 
         ```
         <your_drive_name>/NAS
-        <your_drive_name>/NAS/ATLTrafficLogArchive
+        <your_drive_name>/NAS/3PDCArchive
         ```
 
     - Running the `tree` command from the root of the USB Drive should yeild the following output if the directories were created properly. The System Volume Information folder is negligible and simply an artifact of formatting the USB Drive as FAT32 on Windows.
@@ -96,7 +96,7 @@ Our OS came preinstalled with Python 3.7.3 however anything newer than this shou
         $ tree
         .
         ├── NAS
-        │   └── ATLTrafficLogArchive
+        │   └── 3PDCArchive
         └── System Volume Information
             ├── IndexerVolumeGuid
             └── WPSettings.dat
@@ -104,7 +104,7 @@ Our OS came preinstalled with Python 3.7.3 however anything newer than this shou
 
     7. Now that the Samba NAS is configured and the proper directories are created and mapped, restart the Pi. Alternately, you can opt to restart Samba if the USB Drive is already mounted at `/mnt/usbdrive` using `sudo service smbd restart`
 
-    - The NAS should now be exposed on the local network. You can connect to it using your file explorer. On Windows, open Explorer and go to "This PC". From the top ribbon under the "Computer" tab, select "Add a network location". From here, a popup will go through a couple of explanation pages before asking for an input address. Browsing will sometimes work but if everything is configured properly you should be able to use the following address: "`\\raspberrypi\RaspberryPi NAS`". If a connection cannot be established, try swapping `raspberrypi` with the IP of your Pi. Once done, you should be able to connect to the NAS and see the `ATLTrafficLog` folder within. Test reading and writing files to this location just to be sure it is working as expected. If so, you have completed this part of the setup.
+    - The NAS should now be exposed on the local network. You can connect to it using your file explorer. On Windows, open Explorer and go to "This PC". From the top ribbon under the "Computer" tab, select "Add a network location". From here, a popup will go through a couple of explanation pages before asking for an input address. Browsing will sometimes work but if everything is configured properly you should be able to use the following address: "`\\raspberrypi\RaspberryPi NAS`". If a connection cannot be established, try swapping `raspberrypi` with the IP of your Pi. Once done, you should be able to connect to the NAS and see the `3PDCArchive` folder within. Test reading and writing files to this location just to be sure it is working as expected. If so, you have completed this part of the setup.
 
 7. Install Python Dependencies
 - Use the following commands to install the necessary Python dependencies to run the code:

@@ -102,7 +102,7 @@ def initialize_session(session_status):
     session_ID = name + init_date.strftime("%Y-%m-%d_%H%M")
 
     try:
-        path_string = r"/mnt/usbdrive/NAS/ATLTrafficLogArchive/" + session_ID
+        path_string = r"/mnt/usbdrive/NAS/3PDCArchive/" + session_ID
         os.mkdir(path_string)
     except:
         path = os.path.split(os.getcwd())
