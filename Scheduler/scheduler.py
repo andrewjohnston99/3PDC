@@ -17,6 +17,7 @@ platform = config.platform
 cookies_file = config.cookie_file
 google_email = config.rpi_google_email
 person_full_name = config.person_full_name
+max_cams = config.max_cams
 cfb_polling_interval = config.cfb_polling_interval_secs
 GA511_url = config.GA511_cctv_url
 GA511_geojson = config.GA511_local_geojson
@@ -90,7 +91,7 @@ def approx_speed(distance_mi, time_0, time_1):
 # Find all cams in x km radius of lat long coordinates
 def get_cams_in_radius(latitude, longitude, radius):
     bt = BallTree(np.deg2rad(geojson[["latitude", "longitude"]].values), metric='haversine')
-    indices = bt.query_radius(np.deg2rad(np.c_[latitude, longitude]), r=radius)
+    indices = bt.query_radius(np.deg2rad(np.c_[latitude, longitude]), radius, True, False, True)
     return indices[0]
 
 # Create folders and setup anything else necessary for a collection session.
@@ -130,9 +131,8 @@ def get_location():
 def session_handler(session_status):
     print("Session Handler Now Active")
     session_active = True
-    cam_thread_num = 0
-    polling_time_s = 60
-    polling_radius_miles = 0.5
+    polling_time_s = 30
+    polling_radius_miles = 1
     estimated_speed_mph = 0
     last_loc = [None, None, None]
     curr_loc = [None, None, None]
@@ -146,26 +146,28 @@ def session_handler(session_status):
             session_active = False
             session_status[2] = False
             break
-        if (last_loc != curr_loc):
+        # if (last_loc != curr_loc):
+        else:
             radius = miles_to_radius(polling_radius_miles)
             indices = get_cams_in_radius(curr_loc[0],curr_loc[1],radius)
-            if (last_loc != [None, None, None]):
-                distance = get_distance_between_miles(last_loc[0],last_loc[1],curr_loc[0],curr_loc[1])
-                print(distance)
-                estimated_speed_mph = approx_speed(distance, last_loc[2],curr_loc[2])
-                print(estimated_speed_mph)
-                polling_time_s, polling_radius_miles = calculate_polling_vars(estimated_speed_mph)
-                print(polling_time_s)
-                print(polling_radius_miles)
-            for index in indices:
-                rtsp = geojson.iloc[index].rtsp
-                url = geojson.iloc[index].url
+            # if (last_loc != [None, None, None]):
+            #     distance = get_distance_between_miles(last_loc[0],last_loc[1],curr_loc[0],curr_loc[1])
+            #     print(distance)
+            #     estimated_speed_mph = approx_speed(distance, last_loc[2],curr_loc[2])
+            #     print(estimated_speed_mph)
+            #     polling_time_s, polling_radius_miles = calculate_polling_vars(estimated_speed_mph)
+            #     print(polling_time_s)
+            #     print(polling_radius_miles)
+            max_i = min(len(indices),max_cams) 
+            for i in range(0, max_i):
+                rtsp = geojson.iloc[indices[i]].rtsp
+                url = geojson.iloc[indices[i]].url
                 print(rtsp)
                 print(url)
                 if (platform == "LINUX"):
-                    threading.Thread(target = OpenCVTest.recordCamera, args = (session_status[4],rtsp,url,polling_time_s)).start()
+                    threading.Thread(target = OpenCVTest.recordCamera, args = (session_status[4],rtsp,url,(polling_time_s + 5))).start()
                 elif (platform == "WINDOWS"):
-                    threading.Thread(target = OpenCVTest.recordCameraWindows, args = (session_status[4],rtsp,url,polling_time_s)).start()
+                    threading.Thread(target = OpenCVTest.recordCameraWindows, args = (session_status[4],rtsp,url,(polling_time_s + 5))).start()
                 else:
                     print("Platform not defined")
         time.sleep(polling_time_s)
