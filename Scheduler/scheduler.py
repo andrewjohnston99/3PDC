@@ -11,6 +11,7 @@ import requests
 from sklearn.neighbors import BallTree
 import threading
 import time
+import cleanupRecordings
 
 # Load vars from config and define global vars for main and functions
 platform = config.platform
