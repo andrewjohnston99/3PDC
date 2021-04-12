@@ -93,7 +93,7 @@ def approx_speed(distance_mi, time_0, time_1):
 def get_cams_in_radius(latitude, longitude, radius):
     bt = BallTree(np.deg2rad(geojson[["latitude", "longitude"]].values), metric='haversine')
     indices = bt.query_radius(np.deg2rad(np.c_[latitude, longitude]), radius, True, False, True)
-    return indices[0]
+    return indices[0][0]
 
 # Create folders and setup anything else necessary for a collection session.
 def initialize_session(session_status):
