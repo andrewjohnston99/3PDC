@@ -7,7 +7,7 @@ from datetime import time
 from datetime import timedelta
 from datetime import datetime
 
-def recordCamera(directory, streamLink, imageLink, duration):
+def recordCamera(directory, streamLink, imageLink, duration, eventNumber):
     # Open a sample video available in sample-videos
     stream = streamLink
     url = imageLink
@@ -16,25 +16,39 @@ def recordCamera(directory, streamLink, imageLink, duration):
     # print(stream.rfind("."))
     # print(camera)
     vcap = cv2.VideoCapture(stream)
-    tripNum = 2
+
 
     print(str(datetime.now()))
 
     path = directory
     print ("The current working directory is %s" % path)
-    firstpath = path
+    firstpath = path + "/" + date.today().strftime("%B %d, %Y")
 
     try:
         os.mkdir(firstpath)
     except OSError:
-        print ("Creation of the directory %s failed" % firstpath)
+        print ("Creation of the directory %s failed" % path)
     else:
-        print ("Successfully created the directory %s " % firstpath)
+        print ("Successfully created the directory %s " % path)
 
-    finalpath = firstpath + "/TestDirectory-" + camera + "-" + date.today().strftime("%B %d, %Y")
+
+    midpath = firstpath + r"/Event-" + str(eventNumber)
+
+
+    try:
+        os.mkdir(midpath)
+    except OSError:
+        print ("Creation of the directory %s failed" % midpath)
+    else:
+        print ("Successfully created the directory %s " % midpath)
+
+
+    finalpath = midpath + "/" + camera
+
 
     filename = finalpath + "/" + datetime.now().strftime("%Y%m%d-%H%M%S") + ".avi"
     print(filename)
+
 
     try:
         os.mkdir(finalpath)
@@ -42,6 +56,7 @@ def recordCamera(directory, streamLink, imageLink, duration):
         print ("Creation of the directory %s failed" % finalpath)
     else:
         print ("Successfully created the directory %s " % finalpath)
+
 
     if not vcap.isOpened():
         print("File Cannot be Opened")
