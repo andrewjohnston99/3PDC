@@ -26,9 +26,7 @@ Coming soon 😉
 4. Check that Python 3 is installed using the following command: `$python3 --version` .
 Our OS came preinstalled with Python 3.7.3 however anything newer than this should be supported. If issues arise, consider matching our version.
 
-5. Install Node.js using the following command: `sudo apt-get install nodejs` .
-
-6. Install & Configure the Samba NAS Software using the following steps:
+5. Install & Configure the Samba NAS Software using the following steps:
 
     1. Run the following command: `sudo apt install samba samba-common-bin`
 
@@ -106,13 +104,21 @@ Our OS came preinstalled with Python 3.7.3 however anything newer than this shou
 
     - The NAS should now be exposed on the local network. You can connect to it using your file explorer. On Windows, open Explorer and go to "This PC". From the top ribbon under the "Computer" tab, select "Add a network location". From here, a popup will go through a couple of explanation pages before asking for an input address. Browsing will sometimes work but if everything is configured properly you should be able to use the following address: "`\\raspberrypi\RaspberryPi NAS`". If a connection cannot be established, try swapping `raspberrypi` with the IP of your Pi. Once done, you should be able to connect to the NAS and see the `3PDCArchive` folder within. Test reading and writing files to this location just to be sure it is working as expected. If so, you have completed this part of the setup.
 
-7. Install Python Dependencies
+6. Install Python Dependencies
 - Use the following commands to install the necessary Python dependencies to run the code:
     ```
     $ pip3 install locationsharinglib
     $ pip3 install pandas
     $ pip3 install sklearn
     ```
-8. Generate Google Maps Cookie File (Location Sharing Authentication)
-    
-    Coming soon...
+7. Generate Google Maps Cookie File (Location Sharing Authentication)
+
+    In order for the location collecting portion of 3PDC to work properly it must be able to authenticate using the Google Account created for the Pi. In order to accomplish this, it uses a combination of the email address in the `config.py` file (filled out later), along with a cookie file. You can generate your specific cookie file using these steps:
+
+    1. In your Pi's web browser or your local machines browser, install the [Get cookies.txt extension](https://chrome.google.com/webstore/detail/get-cookiestxt/bgaddhkoddajcdgocldbbfleckgcbcid?hl=en). This requires Chrome or Chromium however you are free to try other methods (untested) of generating the cookie file if you'd like.
+
+    2. Once installed. Sign out of all active Google Accounts.
+
+    3. Navigate to [maps.google.com](https://maps.google.com) and sign in using the account created for locating sharing with the Pi.
+
+    4. Once authenticated, while still on the Google Maps landing page, click the extension and have it export a cookie file. The format will be something like `google.com_cookies.txt`. You may opt for a different filename however it will need to be changed in the config file if it is different than the default above. Save or copy the file to the `Scripts` directory in the project. This should replace the temporary/template file.
