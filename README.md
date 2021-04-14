@@ -121,4 +121,4 @@ Our OS came preinstalled with Python 3.7.3 however anything newer than this shou
 
     3. Navigate to [maps.google.com](https://maps.google.com) and sign in using the account created for locating sharing with the Pi.
 
-    4. Once authenticated, while still on the Google Maps landing page, click the extension and have it export a cookie file. The format will be something like `google.com_cookies.txt`. You may opt for a different filename however it will need to be changed in the config file if it is different than the default above. Save or copy the file to the `Scripts` directory in the project. This should replace the temporary/template file.
+    4. Once authenticated, while still on the Google Maps landing page, click the extension and have it export a cookie file. The format will be something like `google.com_cookies.txt`. You may opt for a different filename however it will need to be changed in the config file if it is different than the default above. Save or copy the file to the `Scheduler` directory in the project. This should replace the temporary/template file.
