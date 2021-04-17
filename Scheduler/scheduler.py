@@ -45,12 +45,9 @@ def calculate_radius(mph):
     # Case 2, 30-54.99 mph, < 1 mi per min and > 1/2 mi per minute
     elif (mph >= 30.0):
         return (0.25)
-    # Case 3, 10-29.99 mph, < 1/2 mi per minute
-    elif (mph >= 10.0):
-        return (0.125)
-    # Case 4, 0-9.99 mph, < 1/4 mi per minute
+    # Case 3, 0-29.99 mph, < 1/2 mi per minute
     else:
-        return (0.0625)
+        return (0.125)
 
 # Check to see if location sharing has started, check every <polling_interval> secs
 def check_for_broadcast(session_status):
