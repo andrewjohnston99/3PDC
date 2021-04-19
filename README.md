@@ -1,4 +1,4 @@
-# 3rd Person Dashcam (3PDC): Georgia Edition
+# 3rd Person Dash-Camera (3PDC): Georgia Edition
 ## CS 4365 Semester Project
 
 ## Usage
