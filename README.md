@@ -152,6 +152,7 @@ Our OS came preinstalled with Python 3.7.3 however anything newer than this shou
 8. Update the `config.py` file with the following details:
 
     > set `person_full_name` to equal the name on the Google Account of the end user (the phone)
+
     > set `rpi_google_email` to equal the email of the Google account used by the Pi (must be the same account as what generated the cookie file)
 
     The config file also includes other parameters to adjust such as platform, max cam number, the GA 511 endpoint, and the check for broadcast polling interval however these should not be changed unless necessary for testing, diagnostics, or development.
