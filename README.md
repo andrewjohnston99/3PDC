@@ -3,7 +3,28 @@
 
 ## Usage
 
-Coming soon 😉
+After completing the setup instructions, 3PDC should be ready for use. In order to manually invoke the code, from the `/Scheduler` directory of 3PDC, run `python3 scheduler.py`. This will start up the scheduler, run the initial setup such as building the geojson and setting up logging, and then enter into the check for broadcast state. 
+
+Details about the status of the scheduler are tracked in the `scheduler.log` file in the root of the 3PDC Archive Directory on the NAS, or in the root of the project directory if the NAS directory is not available. This file can be read with a text editor in real-time to ensure that the scheduler initialized properly and is ready to capture and record a session. Each session will be saved in a directory structure with date/time, tracked person name, camera name, and event number metadata. At the top level of the session folder will be a session log containing all of the coordinates captured, distances and speed calculated, and cameras invoked.
+
+On the side of the phone, simply open Google Maps, click on your profile icon in the top right corner, select Location Sharing from the list of options, type in the email address of the account connected to the Pi or select it from a list of previously shared with accounts, set the sharing duration (should be longer than expected driving session time), then click share. Within the next check for broadcast polling interval (set in config file), 3PDC should detect that a session has been started and write to the log file as well as create a folder on the NAS for the session. It is strongly encouraged that you use a Maps navigation session at the same time for best location accuracy, even if you know where you are going. Failure to do so means that location data is only updated every 3 minutes. At the end of the drive, simply go back to locating sharing and stop sharing with your Pi. The Pi will then finalize the session and reset the state machine in preparation for the next session.
+
+For a more permanent setup, 3PDC can be configured to run at boot so it is always ready as long as the Pi is on. Additionally, a reboot with rebuild the geojson if something gets out of sync. To do this run `sudo nano /etc/rc.local` to edit the startup scripts. Then insert the following inside, taking care to use your specific path:
+
+`
+sudo python3 <path_to_3PDC_root>/Scheduler/scheduler.py &
+`
+
+3PDC will now auto-run at boot and can be checked on remotely on LAN via the NAS. This includes checking the status in the scheduler log as well as viewing captured footage. If any changes are made to the cookie file, config file, or if the geojson data is stale, a reboot of the Pi will restart 3PDC and catch the changes.
+
+The state machine for the scheduler is as follows:
+
+1. Check for Broadcast (waiting for location data)
+2. Initialize Session (got location data, start session)
+3. Handle Session (location data is coming in and the handler is recording cams according to location and the algorithm)
+4. Teardown/Reset (session has finished, state machine reset)
+
+    Back to #1
 
 ## Setup
 
@@ -122,3 +143,10 @@ Our OS came preinstalled with Python 3.7.3 however anything newer than this shou
     3. Navigate to [maps.google.com](https://maps.google.com) and sign in using the account created for locating sharing with the Pi.
 
     4. Once authenticated, while still on the Google Maps landing page, click the extension and have it export a cookie file. The format will be something like `google.com_cookies.txt`. You may opt for a different filename however it will need to be changed in the config file if it is different than the default above. Save or copy the file to the `Scheduler` directory in the project. This should replace the temporary/template file.
+
+8. Update the `config.py` file with the following details:
+
+    > set `person_full_name` to equal the name on the Google Account of the end user (the phone)
+    > set `rpi_google_email` to equal the email of the Google account used by the Pi (must be the same account as what generated the cookie file)
+
+    The config file also includes other parameters to adjust such as platform, max cam number, the GA 511 endpoint, and the check for broadcast polling interval however these should not be changed unless necessary for testing, diagnostics, or development.
