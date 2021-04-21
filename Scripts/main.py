@@ -1,9 +1,5 @@
+#Test script for image capture
 import requests
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -22,7 +18,8 @@ if __name__ == '__main__':
     index = 0
     for url in urls:
         r = requests.get(url)
-        filename = r"C:\Users\clayw\Documents\ATL Traffic\TestDirectory\March 19, 2021" + chr(92) + r"ATL-CAM-" + str(index) + r".jpg"
+        #Replace with the directory you want to save the images in. 
+        filename = r"C:\Users\user\Documents\ATL Traffic\TestDirectory\March 19, 2021" + chr(92) + r"ATL-CAM-" + str(index) + r".jpg"
         print(filename)
         index += 1
         with open(filename, "wb") as f:

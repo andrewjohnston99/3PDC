@@ -131,6 +131,11 @@ Our OS came preinstalled with Python 3.7.3 however anything newer than this shou
     $ pip3 install locationsharinglib
     $ pip3 install pandas
     $ pip3 install sklearn
+    $ pip3 install opencv-python
+    $ pip3 install numpy
+    $ pip3 install requests
+    $ sudo apt-get install libatlas-base-dev
+    
     ```
 7. Generate Google Maps Cookie File (Location Sharing Authentication)
 
