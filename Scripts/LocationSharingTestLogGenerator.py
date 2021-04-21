@@ -1,3 +1,4 @@
+#Testing script for location sharing
 from locationsharinglib import Service
 import time
 
