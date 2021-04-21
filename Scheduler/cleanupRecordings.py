@@ -1,5 +1,6 @@
-import shutil
 import datetime
+import shutil
+import os
 
 # Target directory takes in the base directory containing folders labelled by date
 # DaysPast is how many days ago do you want to delete the files from (0 = Today, 1 = Yesterday, etc)
