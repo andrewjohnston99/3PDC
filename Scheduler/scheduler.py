@@ -262,7 +262,10 @@ while(True):
         logging.info(log_message)
 
     # Case 5 - Start cleanup based on cleanup schedule (time)
-    # TODO - Call cleanup script and handle scheduled task logic
+    # if (datetime.datetime.now() >= next_cleanup_time):
+    #     next_cleanup_time = datetime.datetime.now() + datetime.timedelta(days=1)
+    #     if (platform == "LINUX"):
+    #         cleanupRecordings.cleanDirectory(r"/mnt/usbdrive/NAS/3PDCArchive/", 14)
 
     # Check conditions every second (avoid 100% cpu usage edge-case on Pi from loop)
     time.sleep(1)
